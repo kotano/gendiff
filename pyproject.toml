@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "kotano_gendiff"
+name = "kotano-gendiff"
 version = "0.1.0"
 description = "Find difference between two files"
 authors = ["kotano"]
