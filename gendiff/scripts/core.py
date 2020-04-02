@@ -1,13 +1,7 @@
-import argparse
 import json
 
+
 # TODO Refactor. Too many variables
-
-parser = argparse.ArgumentParser(description='Generate diff')
-parser.add_argument('first_file')
-parser.add_argument('second_file')
-parser.add_argument('-f', '--format', help='set format of output')
-
 
 def generate_diff(file1, file2):
     try:
@@ -37,14 +31,4 @@ def generate_diff(file1, file2):
         mix, key=lambda x: x[1])])
 
     result = '''{{\n{} \n}}'''.format(result)
-    print(result)
     return result
-
-
-def main():
-    args = parser.parse_args()
-    generate_diff(args.first_file, args.second_file)
-
-
-if __name__ == "__main__":
-    main()
