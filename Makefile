@@ -1,3 +1,6 @@
+make install:
+	poetry install
+
 demo:
 	make install_from_pip
 	gendiff ../../ftest/before.json ../../ftest/after.json
