@@ -1,5 +1,6 @@
-install:
-	poetry install
+demo:
+	make install_from_pip
+	gendiff ../../ftest/before.json ../../ftest/after.json
 
 publish_test:
 	poetry config repositories.kotano-gendiff https://test.pypi.org/legacy/
@@ -12,4 +13,5 @@ install_from_pip:
 	pip install -i https://test.pypi.org/simple/ kotano-gendiff --upgrade
 
 uninstall:
-	pip uninstall gendiff
+	pip uninstall kotano-gendiff
+	rm ~/test/bin/gendiff
