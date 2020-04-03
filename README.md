@@ -7,3 +7,6 @@ Gendiff is a tool that can compare two files
 
 >Demo
 [![asciicast](https://asciinema.org/a/AVgGlJJXhj1JoClK6KmxcxUF9.svg)](https://asciinema.org/a/AVgGlJJXhj1JoClK6KmxcxUF9)
+
+>Yaml support
+[![asciicast](https://asciinema.org/a/lWCwN8RkgighGdMM4ceYKUwnU.svg)](https://asciinema.org/a/lWCwN8RkgighGdMM4ceYKUwnU)

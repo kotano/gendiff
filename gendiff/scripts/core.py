@@ -9,20 +9,16 @@ import yaml
 def open_files(path1, path2):
     with open(path1) as f1:
         with open(path2) as f2:
-            if path1.split('.')[-1] == 'yml':
-                data1 = yaml.safe_load(f1)
-            else:
-                data1 = json.load(f1)
-            if path2.split('.')[-1] == 'yml':
-                data2 = yaml.safe_load(f2)
-            else:
-                data2 = json.load(f2)
+            data1 = yaml.safe_load(f1) if path1.split(
+                '.')[-1] == 'yml'else json.load(f1)
+            data2 = yaml.safe_load(f2) if path2.split(
+                '.')[-1] == 'yml' else json.load(f2)
     return (data1, data2)
 
 
+# TODO fix relative paths
 def generate_diff(file1, file2):
     try:
-        # print(file1, file2)
         data1, data2 = open_files(file1, file2)
     except FileNotFoundError:
         # WRONG
@@ -51,4 +47,3 @@ def generate_diff(file1, file2):
 
     result = '''{{\n{}\n}}'''.format(result)
     return result
-
