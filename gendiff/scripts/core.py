@@ -1,14 +1,22 @@
-import json
 import os
+import json
+import yaml
 
 
 # TODO Refactor. Too many variables
+# TODO Bring file management to separate module
 
 def open_files(path1, path2):
     with open(path1) as f1:
-        data1 = json.load(f1)
         with open(path2) as f2:
-            data2 = json.load(f2)
+            if path1.split('.')[-1] == 'yml':
+                data1 = yaml.safe_load(f1)
+            else:
+                data1 = json.load(f1)
+            if path2.split('.')[-1] == 'yml':
+                data2 = yaml.safe_load(f2)
+            else:
+                data2 = json.load(f2)
     return (data1, data2)
 
 
@@ -43,3 +51,4 @@ def generate_diff(file1, file2):
 
     result = '''{{\n{}\n}}'''.format(result)
     return result
+
