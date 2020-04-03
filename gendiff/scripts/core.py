@@ -1,17 +1,26 @@
 import json
+import os
 
 
 # TODO Refactor. Too many variables
 
+def open_files(path1, path2):
+    with open(path1) as f1:
+        data1 = json.load(f1)
+        with open(path2) as f2:
+            data2 = json.load(f2)
+    return (data1, data2)
+
+
 def generate_diff(file1, file2):
     try:
-        with open(file1) as f1:
-            data1 = json.load(f1)
-            with open(file2) as f2:
-                data2 = json.load(f2)
+        data1, data2 = open_files(file1, file2)
     except FileNotFoundError:
-        print('File does not exist')
-        return
+        print('Searching for relative paths')
+        DIRNAME = os.path.dirname(__file__)
+        path1 = os.path.join(DIRNAME, file1)
+        path2 = os.path.join(DIRNAME, file2)
+        data1, data2 = open_files(path1, path2)
 
     before = set(data1.items())
     after = set(data2.items())
@@ -24,11 +33,10 @@ def generate_diff(file1, file2):
     xnew = {('+',) + x for x in new}
     xold = {('-',) + x for x in old}
 
-    mix = list(xcommon | xnew | xold)
-
     # TODO not stable sort
-    result = '\n'.join(['  {} {} : {}'.format(*elems) for elems in sorted(
-        mix, key=lambda x: (x[1], x[2]))])
+    mix = sorted(list(xcommon | xnew | xold), key=lambda x: (x[1], x[2]))
 
-    result = '''{{\n{} \n}}'''.format(result)
+    result = '\n'.join(['  {} {} : {}'.format(*elems) for elems in mix])
+
+    result = '''{{\n{}\n}}'''.format(result)
     return result
