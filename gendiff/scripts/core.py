@@ -24,11 +24,11 @@ def generate_diff(file1, file2):
     xnew = {('+',) + x for x in new}
     xold = {('-',) + x for x in old}
 
-    mix = xcommon | xnew | xold
+    mix = list(xcommon | xnew | xold)
 
     # TODO not stable sort
     result = '\n'.join(['  {} {} : {}'.format(*elems) for elems in sorted(
-        mix, key=lambda x: x[1])])
+        mix, key=lambda x: (x[1], x[2]))])
 
     result = '''{{\n{} \n}}'''.format(result)
     return result
