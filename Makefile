@@ -1,4 +1,4 @@
-make install:
+install:
 	poetry install
 
 demo:
@@ -8,6 +8,9 @@ demo:
 publish_test:
 	poetry config repositories.kotano-gendiff https://test.pypi.org/legacy/
 	poetry publish -r kotano-gendiff
+
+test:
+	poetry run pytest ./tests/test.py
 
 lint:
 	poetry run flake8 gendiff
