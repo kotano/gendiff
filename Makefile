@@ -10,7 +10,7 @@ publish_test:
 	poetry publish -r kotano-gendiff
 
 test:
-	poetry run pytest ./tests/test.py
+	poetry run pytest ./tests/test.py -vv
 
 lint:
 	poetry run flake8 gendiff
