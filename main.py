@@ -1,6 +1,7 @@
 import argparse
 
 from gendiff.scripts.core import generate_diff
+# from scripts.core import generate_diff
 
 
 parser = argparse.ArgumentParser(description='Generate diff')
@@ -14,5 +15,13 @@ def main():
     print(generate_diff(args.first_file, args.second_file))
 
 
+def debug():
+    r = './tests/fixtures/simple/gendiff_result.txt'
+    a = './tests/fixtures/simple/before.json'
+    b = './tests/fixtures/simple/after.json'
+    args = parser.parse_args([a, b])
+    print(generate_diff(args.first_file, args.second_file))
+
+
 if __name__ == "__main__":
-    main()
+    debug()

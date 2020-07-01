@@ -1,48 +1,8 @@
-import json
-from builtins import isinstance
-
-import yaml
+from gendiff.utils import open_file
+from gendiff.utils import convert_to_tuple
 
 # TODO Refactor. Too many variables
 # TODO Bring file management to separate module
-
-
-def open_file(path):
-    '''Takes .json or .yml file as arg and returns
-    dictionary with their contents.'''
-    with open(path) as f:
-        data = yaml.safe_load(f) if path.split(
-            '.')[-1] == 'yml'else json.load(f)
-    return (data)
-
-
-def convert_to_tuple(d: dict):
-    res = {}
-    for k, v in d.items():
-        if isinstance(v, dict):
-            res[k] = convert_to_tuple(v)
-        else:
-            res[k] = v
-    return tuple(res.items())
-
-
-def compare_values(val1, val2):
-    before = set(convert_to_tuple(val1))
-    after = set(convert_to_tuple(val2))
-    
-    common = before & after
-    new = after - before
-    old = before - after
-
-    xcommon = {(' ',) + x for x in common}
-    xnew = {('+',) + x for x in new}
-    xold = {('-',) + x for x in old}
-
-    mix = sorted(list(xcommon | xnew | xold), key=lambda x: (x[1], x[2]))
-    for x in mix:
-        print(x)
-    res = format(mix)
-    return res
 
 
 def generate_diff(file1, file2):
@@ -75,6 +35,25 @@ def generate_diff(file1, file2):
         # for x in mix:
         #     if isinstance(x[-1], tuple):
 
+
+def compare_values(val1, val2):
+    before = set(convert_to_tuple(val1))
+    after = set(convert_to_tuple(val2))
+
+    common = before & after
+    new = after - before
+    old = before - after
+
+    xcommon = {(' ',) + x for x in common}
+    xnew = {('+',) + x for x in new}
+    xold = {('-',) + x for x in old}
+
+    mix = sorted(list(xcommon | xnew | xold), key=lambda x: (x[1], x[2]))
+    for x in mix:
+        print(x)
+    res = format(mix)
+    return res
+
     def diff(data1, data2):
         res = {}
         comm = data1.keys() & data2.keys()
@@ -104,7 +83,7 @@ def generate_diff(file1, file2):
     return diff(data1, data2)
 
 
-def format(lst):
+def format_diff(lst):
     for elem in lst:
         if isinstance(elem[-1], tuple):
             return format(elem[-1])
@@ -121,27 +100,27 @@ def format(lst):
     return output
 
 
-def test_gendiff_nested():
-    f = open('./tests/fixtures/gendiff_nested_res.txt')
-    # right_answer = f.read()
+# def test_gendiff_nested():
+#     f = open('./tests/fixtures/gendiff_nested_res.txt')
+#     # right_answer = f.read()
 
-    answer = (generate_diff(
-        './tests/fixtures/before.json',
-        './tests/fixtures/after.json'))
-    # print(answer == right_answer)
-    print(answer)
+#     answer = (generate_diff(
+#         './tests/fixtures/before.json',
+#         './tests/fixtures/after.json'))
+#     # print(answer == right_answer)
+#     print(answer)
 
 
-def test_gendiff_json():
-    f = open('./tests/fixtures/simple/gendiff_result.txt')
-    # right_answer = f.read()
+# def test_gendiff_json():
+#     f = open('./tests/fixtures/simple/gendiff_result.txt')
+#     # right_answer = f.read()
 
-    answer = (generate_diff(
-        './tests/fixtures/simple/before.json',
-        './tests/fixtures/simple/after.json'))
-    # print(answer == right_answer)
-    print(answer)
+#     answer = (generate_diff(
+#         './tests/fixtures/simple/before.json',
+#         './tests/fixtures/simple/after.json'))
+#     # print(answer == right_answer)
+#     print(answer)
 
 
 # test_gendiff_json()
-test_gendiff_nested()
+# test_gendiff_nested()
