@@ -9,15 +9,15 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-gendiff = "gendiff.main:main"
+gendiff = "gendiff.scripts.run_gendiff:main"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-pytest = "^5.4.1"
 pyyaml = "^5.3.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7.9"
+pytest = "^5.4.1"
 
 [build-system]
 requires = ["poetry>=0.12"]

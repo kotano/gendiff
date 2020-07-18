@@ -3,14 +3,13 @@ install:
 
 demo:
 	make install_from_pip
-	gendiff ../../ftest/before.json ../../ftest/after.json
 
 publish_test:
 	poetry config repositories.kotano-gendiff https://test.pypi.org/legacy/
 	poetry publish -r kotano-gendiff
 
 test:
-	poetry run pytest ./tests/test.py -vv
+	poetry run pytest -vv
 
 lint:
 	poetry run flake8 gendiff
