@@ -27,4 +27,5 @@ def generate_diff(file1, file2):
     data2 = open_file(file2)
 
     diff = Difference(data1, data2)
+    # diff.brackets = '[]'
     return str(diff)
