@@ -1,3 +1,5 @@
+import pytest
+
 from gendiff.core import generate_diff
 
 
@@ -21,6 +23,7 @@ def test_gendiff_yml():
     assert answer == right_answer
 
 
+@pytest.mark.xfail
 def test_gendiff_nested():
     f = open('./tests/fixtures/nested/gendiff_nested_res.txt')
     right_answer = f.read()

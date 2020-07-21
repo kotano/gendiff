@@ -25,5 +25,5 @@ def debug_nested():
 
 
 if __name__ == "__main__":
-    # debug_simple()
+    debug_simple()
     debug_nested()
