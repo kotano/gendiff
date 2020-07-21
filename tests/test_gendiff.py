@@ -1,34 +1,46 @@
 import pytest
 
 from gendiff.core import generate_diff
+from gendiff.utils import open_file
+
+
+def test_open_file():
+    got = open_file('./tests/fixtures/simple/before.json')
+    expected = {'host': 'hexlet.io', 'proxy': '123.234.53.22', 'timeout': 50}
+    assert got == expected
+
+    got = open_file('./tests/fixtures/simple/before.yml')
+    assert got == expected
 
 
 def test_gendiff_json():
-    f = open('./tests/fixtures/simple/gendiff_result.txt')
-    right_answer = f.read()
-
-    answer = generate_diff(
+    expected = open('./tests/fixtures/simple/gendiff_result.txt').read()
+    got = generate_diff(
         './tests/fixtures/simple/before.json',
         './tests/fixtures/simple/after.json')
-    assert answer == right_answer
+    assert got == expected
 
 
 def test_gendiff_yml():
-    f = open('./tests/fixtures/simple/gendiff_result.txt')
-    right_answer = f.read()
-
-    answer = generate_diff(
+    expected = open('./tests/fixtures/simple/gendiff_result.txt').read()
+    got = generate_diff(
         './tests/fixtures/simple/before.yml',
         './tests/fixtures/simple/after.yml')
-    assert answer == right_answer
+    assert got == expected
+
+
+def test_gendiff_nested():
+    expected = open('./tests/fixtures/nested/gendiff_nested_res.txt').read()
+    got = generate_diff(
+        './tests/fixtures/nested/before.json',
+        './tests/fixtures/nested/after.json')
+    assert got == expected
 
 
 @pytest.mark.xfail
-def test_gendiff_nested():
-    f = open('./tests/fixtures/nested/gendiff_nested_res.txt')
-    right_answer = f.read()
-
-    answer = generate_diff(
+def test_gendiff_plain():
+    expected = open('./tests/fixtures/plain_res.txt').read()
+    got = generate_diff(
         './tests/fixtures/nested/before.json',
         './tests/fixtures/nested/after.json')
-    assert answer == right_answer
+    assert got == expected

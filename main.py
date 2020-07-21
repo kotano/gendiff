@@ -4,8 +4,8 @@ Not a script!
 Use this module as an entry point for development purposes and debugging.
 """
 
-from gendiff.core import generate_diff
 from gendiff.cli import get_arg_parser
+from gendiff.core import generate_diff
 
 
 def debug_simple():

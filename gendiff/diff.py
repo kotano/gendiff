@@ -11,8 +11,8 @@ class Diff(object):
     iscomplex = False
     """Set to true if diff has a complex value."""
 
-    def __init__(self, status=' ', key=None, value=None, parent=None):
-        self.sign = status
+    def __init__(self, status=COMMON, key=None, value=None, parent=None):
+        self.status = status
         self.key = key
         self.parent = parent
         self.level = parent.level + 1 if parent else 1
@@ -25,11 +25,18 @@ class Diff(object):
             res.iscomplex = True
         return res
 
+    # def to_plain(self):
+    #     template = "Property '{}' was {}"
+    #     if self.status == NEW:
+    #         pass
+    #     elif self.status == REMOVED:
+    #         return
+
     def __str__(self):
-        indent = self.level * '  '
+        indent = self.level * 2 * ' '
         rep = '{}{} {}: {}'.format(
             indent,
-            self.sign,
+            self.status,
             self.key,
             self.value
         )
@@ -45,7 +52,7 @@ class Difference(object):
     level: int
     """Indentation level."""
     brackets = '{}'
-    """Brackets symbol for rendering."""
+    """Pair of symbols to use as ending and closing brackets for rendering."""
 
     def __init__(self, before={}, after={}, level=0, parent=None):
         self.before = before
@@ -54,7 +61,6 @@ class Difference(object):
         self.parent = parent
 
         self.find_difference(before, after)
-        self.indent = level * 4 * ' '
 
     def find_difference(self, before, after):
         difs = []
@@ -67,8 +73,7 @@ class Difference(object):
 
         common = self.common_keys = before.keys() & after.keys()
         new = self.new_keys = get_diffs(NEW, after, before)
-        removed = self.removed_keys = get_diffs(
-            REMOVED, before, after)
+        removed = self.removed_keys = get_diffs(REMOVED, before, after)
 
         for k in common:
             if isinstance(before[k], dict) and isinstance(after[k], dict):
@@ -99,10 +104,16 @@ class Difference(object):
         res = '\n'.join(res)
         return res
 
+    # def plain_view(self):
+    #     res = []
+    #     for x in self.contents:
+    #         pass
+
     def __str__(self):
-        # indent = self.level * self.indentation
+        ind = self.level + 1 if self.parent else self.level
+        indent = ind * 2 * ' '
         rep = f'''\
 {self.brackets[0]}
 {self.render(self.contents)}
-{self.indent}{self.brackets[1]}'''
+{indent}{self.brackets[1]}'''
         return rep

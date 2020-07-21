@@ -1,5 +1,4 @@
-from gendiff import cli
-from gendiff import core
+from gendiff import cli, core
 
 
 def main():

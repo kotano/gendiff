@@ -4,15 +4,17 @@ install:
 demo:
 	make install_from_pip
 
-publish_test:
+publish_test: check
 	poetry config repositories.kotano-gendiff https://test.pypi.org/legacy/
 	poetry publish -r kotano-gendiff
 
 test:
-	poetry run pytest -vv
+	poetry run pytest -vv --strict --cov
 
 lint:
 	poetry run flake8 gendiff
+
+check: lint test
 
 install_from_pip:
 	pip install -i https://test.pypi.org/simple/ kotano-gendiff --upgrade
