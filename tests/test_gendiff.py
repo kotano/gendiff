@@ -1,5 +1,3 @@
-import pytest
-
 from gendiff.core import generate_diff
 from gendiff.utils import open_file
 
@@ -32,12 +30,13 @@ def test_gendiff_nested(nested_json_path, nested_res):
     assert got == expected
 
 
-@pytest.mark.xfail
-def test_gendiff_plain(plain_res, nested_json_path, simple_mix_path):
-    expected = plain_res
-
+def test_gendiff_plain(
+        nested_plain_res, simple_plain_res,
+        nested_json_path, simple_mix_path):
+    expected = nested_plain_res
     got = generate_diff(*nested_json_path, 'plain')
     assert got == expected
 
+    expected = simple_plain_res
     got = generate_diff(*simple_mix_path, 'plain')
     assert got == expected

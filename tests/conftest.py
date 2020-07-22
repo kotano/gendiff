@@ -44,9 +44,12 @@ def nested_res():
 
 
 @pytest.fixture
-def plain_res():
-    return safe_read('./tests/fixtures/plain_res.txt')
+def nested_plain_res():
+    return safe_read('./tests/fixtures/nested/plain_res.txt')
 
+@pytest.fixture
+def simple_plain_res():
+    return safe_read('./tests/fixtures/simple/plain_res.txt')
 
 @pytest.fixture
 def changed_dicts_simple(simple_json_path):

@@ -4,12 +4,10 @@ This module contains classes to work with differences.
 """
 
 # STATUSES
-COMMON, NEW, REMOVED, = ' ', '+', '-'
+COMMON, NEW, REMOVED, CHANGED = ' ', '+', '-', 'c'
 
 
 class Diff(object):
-    iscomplex = False
-    """Set to true if diff has a complex value."""
     changedfrom = None
 
     def __init__(self, status=COMMON, key=None, value=None, parent=''):
@@ -36,13 +34,21 @@ class Diff(object):
         return res
 
     def __str__(self):
+        template = '{}{} {}: {}'
         indent = self.level * 2 * ' '
-        rep = '{}{} {}: {}'.format(
+        status = self.status
+
+        if self.status == CHANGED:
+            template = '{}\n{}'.format(str(self.changedfrom), template)
+            status = NEW
+
+        rep = template.format(
             indent,
-            self.status,
+            status,
             self.key,
             self.value
         )
+
         return rep
 
 
@@ -89,8 +95,10 @@ class Difference(object):
             # Then there is changed values.
             else:
                 # Show which values have changed.
-                difs.append(Diff(REMOVED, k, before[k], self))
-                difs.append(Diff(NEW, k, after[k], self))
+                r = Diff(REMOVED, k, before[k], self)
+                c = Diff(CHANGED, k, after[k], self)
+                c.changedfrom = r
+                difs.append(c)
 
         # Add diffs to content.
         difs += new
@@ -99,7 +107,12 @@ class Difference(object):
         self.contents = sorted(difs, key=lambda x: x.key)
         return self.contents
 
+    def _chain(self, before, after):
+        before.changed = (before, after)
+        after.changed = (before, after)
+
     # VISUAL
+
     def render(self, difs):
         res = []
         for x in difs:
