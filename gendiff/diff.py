@@ -10,8 +10,9 @@ COMMON, NEW, REMOVED, = ' ', '+', '-'
 class Diff(object):
     iscomplex = False
     """Set to true if diff has a complex value."""
+    changedfrom = None
 
-    def __init__(self, status=COMMON, key=None, value=None, parent=None):
+    def __init__(self, status=COMMON, key=None, value=None, parent=''):
         self.status = status
         self.key = key
         self.parent = parent
@@ -25,12 +26,14 @@ class Diff(object):
             res.iscomplex = True
         return res
 
-    # def to_plain(self):
-    #     template = "Property '{}' was {}"
-    #     if self.status == NEW:
-    #         pass
-    #     elif self.status == REMOVED:
-    #         return
+    def get_parents(self) -> list:
+        res = []
+        previous_diff = self.parent.parent
+        if previous_diff and previous_diff.parent:
+            res += previous_diff.get_parents()
+        if previous_diff:
+            res.append(previous_diff)
+        return res
 
     def __str__(self):
         indent = self.level * 2 * ' '
@@ -44,17 +47,17 @@ class Diff(object):
 
 
 class Difference(object):
-    new_keys = None
-    removed_keys = None
-    common_keys = None
+    new_keys = []
+    removed_keys = []
+    common_keys = []
     contents = []
 
     level: int
-    """Indentation level."""
+    """Nesting level."""
     brackets = '{}'
     """Pair of symbols to use as ending and closing brackets for rendering."""
 
-    def __init__(self, before={}, after={}, level=0, parent=None):
+    def __init__(self, before={}, after={}, level=0, parent=''):
         self.before = before
         self.after = after
         self.level = level
@@ -62,18 +65,18 @@ class Difference(object):
 
         self.find_difference(before, after)
 
+    def get_diffs(self, status, d1, d2):
+        res = []
+        for k in d1.keys() - d2.keys():
+            res.append(Diff(status, k, d1[k], self))
+        return res
+
     def find_difference(self, before, after):
         difs = []
 
-        def get_diffs(status, d1, d2):
-            res = []
-            for k in d1.keys() - d2.keys():
-                res.append(Diff(status, k, d1[k], self))
-            return res
-
         common = self.common_keys = before.keys() & after.keys()
-        new = self.new_keys = get_diffs(NEW, after, before)
-        removed = self.removed_keys = get_diffs(REMOVED, before, after)
+        new = self.new_keys = self.get_diffs(NEW, after, before)
+        removed = self.removed_keys = self.get_diffs(REMOVED, before, after)
 
         for k in common:
             if isinstance(before[k], dict) and isinstance(after[k], dict):
@@ -104,14 +107,10 @@ class Difference(object):
         res = '\n'.join(res)
         return res
 
-    # def plain_view(self):
-    #     res = []
-    #     for x in self.contents:
-    #         pass
-
     def __str__(self):
-        ind = self.level + 1 if self.parent else self.level
-        indent = ind * 2 * ' '
+        # Indentation for closing bracket.
+        inc = self.level + 1 if self.parent else self.level
+        indent = inc * 2 * ' '
         rep = f'''\
 {self.brackets[0]}
 {self.render(self.contents)}

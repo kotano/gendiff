@@ -22,8 +22,10 @@ def debug_nested():
     args = get_arg_parser().parse_args([a, b])
     res = generate_diff(args.first_file, args.second_file)
     print(res)
+    res = generate_diff(args.first_file, args.second_file, 'plain')
+    print(res)
 
 
 if __name__ == "__main__":
-    debug_simple()
+    # debug_simple()
     debug_nested()

@@ -9,7 +9,7 @@ publish_test: check
 	poetry publish -r kotano-gendiff
 
 test:
-	poetry run pytest -vv --strict --cov
+	poetry run pytest -vv --strict --cov --cov-report xml
 
 lint:
 	poetry run flake8 gendiff
