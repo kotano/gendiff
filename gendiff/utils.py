@@ -4,7 +4,7 @@ import json
 import yaml
 
 
-def open_file(path):
+def safe_load(path):
     """Return python object from file.
 
     Args:
@@ -22,6 +22,11 @@ def open_file(path):
         elif ext == 'json':
             data = json.load(f)
     return data
+
+
+def safe_read(filename, **kwargs) -> str:
+    with open(filename, **kwargs) as f:
+        return f.read()
 
 
 # NOTE: Deprecated

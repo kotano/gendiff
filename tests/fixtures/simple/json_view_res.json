@@ -1,0 +1,61 @@
+{
+    "before": {
+        "host": "hexlet.io",
+        "timeout": 50,
+        "proxy": "123.234.53.22"
+    },
+    "after": {
+        "timeout": 20,
+        "verbose": true,
+        "host": "hexlet.io"
+    },
+    "level": 0,
+    "parent": "",
+    "common_keys": [
+        "timeout",
+        "host"
+    ],
+    "new_keys": [
+        "verbose"
+    ],
+    "removed_keys": [
+        "proxy"
+    ],
+    "contents": [
+        {
+            "status": " ",
+            "key": "host",
+            "parent": [],
+            "level": 1,
+            "value": "hexlet.io"
+        },
+        {
+            "status": "-",
+            "key": "proxy",
+            "parent": [],
+            "level": 1,
+            "value": "123.234.53.22"
+        },
+        {
+            "status": "c",
+            "key": "timeout",
+            "parent": [],
+            "level": 1,
+            "value": 20,
+            "changedfrom": {
+                "status": "-",
+                "key": "timeout",
+                "parent": [],
+                "level": 1,
+                "value": 50
+            }
+        },
+        {
+            "status": "+",
+            "key": "verbose",
+            "parent": [],
+            "level": 1,
+            "value": true
+        }
+    ]
+}

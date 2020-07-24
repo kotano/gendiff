@@ -1,15 +1,10 @@
 """Gendiff project main module.
 
 This module contains main logics for `Gendiff` project.
-
-
-TODO:
-    * Consider refactoring
-        * Remove extra variables
 """
 
 from gendiff.diff import Difference
-from gendiff.utils import open_file
+from gendiff.utils import safe_load
 from gendiff.views import render
 
 
@@ -23,11 +18,11 @@ def generate_diff(file1, file2, format_='default'):
             choose from ['default', 'plain', 'json']
 
     Returns:
-        str: Json-like stri
+        str: Json-like string
     """
 
-    data1 = open_file(file1)
-    data2 = open_file(file2)
+    data1 = safe_load(file1)
+    data2 = safe_load(file2)
 
     diff = Difference(data1, data2)
 

@@ -1,10 +1,28 @@
+"""Plain-view module determines new way of rendering Difference object.
+`plain view` consists of strings each describing changes made in new version
+of file.
+
+Example:
+    >>> diff = Difference(file1, file2)
+    >>> print(plain_view(diff))
+    Property 'common.setting2' was removed
+    Property 'common.setting6' was removed
+    Property 'common.setting4' was added with value: 'blah blah'
+    Property 'common.setting5' was added with value: 'complex value'
+    Property 'common.site.base' was removed
+    Property 'group1.baz' was changed. From 'bas' to 'bars'
+    Property 'group2' was removed
+    Property 'group3' was added with value: 'complex value'
+"""
+
+
 from gendiff.diff import Difference
 from gendiff.diff import COMMON, NEW, REMOVED, CHANGED
 
 
 def to_plain(diff) -> str:
     if diff.status == COMMON:
-        return ''
+        return
 
     prop = '.'.join([x.key for x in diff.get_parents()] + [diff.key])
     template = "Property '" + prop + "' was {}"
@@ -23,10 +41,8 @@ def to_plain(diff) -> str:
             diff.changedfrom.value, diff.value)
         return template.format(value)
 
-    return ''
 
-
-def collect_plain(difference) -> str:
+def collect_plain(difference) -> list:
     res = []
 
     for d in difference.contents:
