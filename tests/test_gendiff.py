@@ -3,7 +3,7 @@ from gendiff.core import generate_diff
 from gendiff.utils import safe_load
 
 
-def test_open_file():
+def test_safe_load():
     expected = {'host': 'hexlet.io', 'proxy': '123.234.53.22', 'timeout': 50}
 
     got = safe_load('./tests/fixtures/simple/before.json')

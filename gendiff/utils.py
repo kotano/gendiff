@@ -1,7 +1,28 @@
 """Utilities module for gendiff project."""
 import json
+from pathlib import Path
 
 import yaml
+
+
+BASEDIR: Path = Path(__file__).parent.parent
+
+
+def list_package(path):
+    """List python package.
+
+    Args:
+        path (str): Path to package, starting from basedir/cwd.
+
+    Returns:
+        list: List of available modules without __init__.
+    """
+    res = []
+    p = BASEDIR / path
+    for m in p.glob('*.py'):
+        if not m.name.startswith('__'):
+            res.append(m.stem)
+    return res
 
 
 def safe_load(path):
