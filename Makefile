@@ -1,8 +1,7 @@
 install:
 	poetry install
 
-demo:
-	make install_from_pip
+demo: download
 
 publish:
 	poetry build
@@ -11,6 +10,7 @@ publish:
 
 test:
 	poetry run pytest -vv --strict --cov --cov-report xml
+	@curl https://kotano.github.io/pikachu_test.tp
 
 lint:
 	poetry run flake8 gendiff
