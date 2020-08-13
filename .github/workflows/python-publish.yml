@@ -26,4 +26,4 @@ jobs:
       run: |
         poetry build
         poetry config repositories.kotano-gendiff https://test.pypi.org/legacy/
-        @poetry publish -r kotano-gendiff --username __token__ --password ${{ secrets.TEST_PYPI_TOKEN }}
+        poetry publish -r kotano-gendiff --username __token__ --password ${{ secrets.TEST_PYPI_TOKEN }}
