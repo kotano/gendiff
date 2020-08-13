@@ -4,9 +4,10 @@ install:
 demo:
 	make install_from_pip
 
-publish_test: check
+publish_test:
+	poetry build
 	poetry config repositories.kotano-gendiff https://test.pypi.org/legacy/
-	poetry publish -r kotano-gendiff
+	@poetry publish -r kotano-gendiff --username ${TEST_PYPI_USERNAME} --password ${TEST_PYPI_PASSWORD}
 
 test:
 	poetry run pytest -vv --strict --cov --cov-report xml
