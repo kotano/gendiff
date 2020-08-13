@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "kotano-gendiff"
-version = "0.7.1"
-description = "Find difference between two files"
+version = "0.7.2"
+description = "Find difference between two files."
 authors = ["kotano"]
 
 packages = [
@@ -14,10 +14,10 @@ gendiff = "gendiff.scripts.run_gendiff:main"
 [tool.poetry.dependencies]
 python = "^3.6"
 pyyaml = "^5.3.1"
-autopep8 = "^1.5.3"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7.9"
+autopep8 = "^1.5.3"
 pytest = "^5.4.1"
 pytest-cov = "^2.10.0"
 

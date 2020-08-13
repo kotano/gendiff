@@ -4,7 +4,7 @@ install:
 demo:
 	make install_from_pip
 
-publish_test:
+publish:
 	poetry build
 	poetry config repositories.kotano-gendiff https://test.pypi.org/legacy/
 	@poetry publish -r kotano-gendiff --username ${TEST_PYPI_USERNAME} --password ${TEST_PYPI_PASSWORD}
@@ -15,11 +15,12 @@ test:
 lint:
 	poetry run flake8 gendiff
 
-check: lint test
+check: lint
+	pytest -vv --strict
 
-install_from_pip:
+download:
+	@echo 'Downloading package from "test.pypi.org"'
 	pip install -i https://test.pypi.org/simple/ kotano-gendiff --upgrade
 
 uninstall:
 	pip uninstall kotano-gendiff
-	rm ~/test/bin/gendiff
