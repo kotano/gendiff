@@ -25,15 +25,13 @@ def list_package(path):
     return res
 
 
-def safe_load(path):
-    """Return python object from file.
+def load(path):
+    """Return python dictionary from file.
 
     Args:
         path (str): Path to file.
 
-    Returns:
-        any: Returns corresponding python object,
-            depending on file contents.
+    Returns: dict
     """
     data = None
     with open(path) as f:
@@ -46,24 +44,13 @@ def safe_load(path):
 
 
 def safe_read(filename, **kwargs) -> str:
-    with open(filename, **kwargs) as f:
-        return f.read()
-
-
-# NOTE: Deprecated
-def convert_to_tuple(d: dict):
-    """Recursively convert dict key-value pairs to tuple.
+    """Read file.
 
     Args:
-        d (dict): Dictionary to convert.
+        filename (str): Path to file.
 
     Returns:
-        tuple: Tuple in (key, value) format.
+        str: File contents.
     """
-    res = {}
-    for k, v in d.items():
-        if isinstance(v, dict):
-            res[k] = convert_to_tuple(v)
-        else:
-            res[k] = v
-    return tuple(res.items())
+    with open(filename, **kwargs) as f:
+        return f.read()

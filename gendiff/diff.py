@@ -1,4 +1,4 @@
-"""Difference objects.
+"""`Diff` objects.
 
 This module contains classes to work with differences.
 """
@@ -7,33 +7,20 @@ This module contains classes to work with differences.
 COMMON, NEW, REMOVED, CHANGED = ' ', '+', '-', 'c'
 
 
-class DiffBase(object):
-    # NOTE: Future
-    # FIXME: Tests don't pass when DiffBase inherits from dict
-
-    def __setitem__(self, key, item):
-        self.__dict__[key] = item
-
-    def __getitem__(self, key):
-        return self.__dict__[key]
-
-        # pass
-
-
-class Diff(DiffBase):
-    """Diff class provides info about changed attributes."""
+class Change:
+    """`Change` class provides info about changed attributes."""
 
     changedfrom = None
     """Link to previous state of diff."""
 
     def __init__(self, status=COMMON, key='', value=None, *, parent=''):
-        """Create Diff class instance.
+        """Create `Change` class instance.
 
         Args:
 
-            status (str, optional): Diff's status sign. Defaults to ' '.
-            key (str, optional): Diff key. Defaults to ''.
-            value (any, optional): Diff's value. Defaults to None.
+            status (str, optional): `Change`'s status sign. Defaults to ' '.
+            key (str, optional): `Change` key. Defaults to ''.
+            value (any, optional): `Change`'s value. Defaults to None.
             parent (object, optional): Link to parent object. Defaults to ''.
         """
         self.status = status
@@ -45,7 +32,7 @@ class Diff(DiffBase):
     def _normalize(self, value):
         res = value
         if isinstance(value, dict):
-            res = Difference(value, value, level=self.level)
+            res = Diff(value, value, level=self.level)
             res.parent = self
         return res
 
@@ -54,7 +41,7 @@ class Diff(DiffBase):
 
         Returns:
             list(..., obj, obj): [.., grandparent, parent]."""
-        # NOTE: Currently diff's parent is a difference object,
+        # NOTE: Currently diff's parent is a `Diff` object,
         # so we have to call parent twice to get previous diff.
         res = []
         if self.parent:
@@ -93,37 +80,32 @@ class Diff(DiffBase):
         return res
 
 
-class Difference(DiffBase):
-    """Difference class gathers information about differences
-    between two dictionaries.
+class Diff:
+    """`Diff` class gathers information about differences
+    between two dictionaries and keeps this info as `Diffs` in `contents`.
 
     Attributes:
-        contents (list): list with `Diff` objects.
+        contents (list): list with `Change` objects.
         new_keys (list): list of new keys.
         common_keys (list): list of common keys.
         removed_keys (list): list of removed keys.
-
-    Methods:
-        find_difference -> list
-        get_diffs -> list
-        to_dict -> dict
     """
 
-    new_keys = []
-    removed_keys = []
-    common_keys = []
-    contents = []
+    new_keys: list
+    removed_keys: list
+    common_keys: list
+    contents: list
 
     level: int
     """Nesting level."""
-    brackets = '{}'
+    brackets: str = '{}'
     """A pair of characters to use as trailing and closing parentheses
     for rendering."""
     parent = ''
-    """Parrent object. Usually leads to Diff object or empty string."""
+    """Parent object. Usually leads to `Change` object or empty string."""
 
     def __init__(self, before={}, after={}, *, level=0):
-        """Create an instance of Difference class.
+        """Create an instance of `Diff` class.
 
         NOTE: Executes `self.find_difference(before, after)` at the end.
 
@@ -141,12 +123,17 @@ class Difference(DiffBase):
         self.after = after
         self.level = level
 
+        self.common_keys = []
+        self.new_keys = []
+        self.removed_keys = []
+        self.contents = []
+
         self.find_difference(before, after)
 
     def get_diffs(self, status, d1, d2) -> list:
         res = []
         for k in d1.keys() - d2.keys():
-            res.append(Diff(status, k, d1[k], parent=self))
+            res.append(Change(status, k, d1[k], parent=self))
         return res
 
     def find_difference(self, before: dict, after: dict):
@@ -158,7 +145,7 @@ class Difference(DiffBase):
             after (dict): Current dictionary.
 
         Returns:
-            list: Difference object's `self.contents` attribute.
+            list: `Diff` object's `self.contents` attribute.
         """
         difs = []
 
@@ -171,22 +158,22 @@ class Difference(DiffBase):
         difs += removed
         for k in common:
             if isinstance(before[k], dict) and isinstance(after[k], dict):
-                v = Difference(before[k], after[k], level=self.level + 1)
-                d = Diff(COMMON, k, v, parent=self)
+                v = Diff(before[k], after[k], level=self.level + 1)
+                d = Change(COMMON, k, v, parent=self)
                 v.parent = d
                 difs.append(d)
             elif before[k] == after[k]:
-                difs.append(Diff(COMMON, k, before[k], parent=self))
+                difs.append(Change(COMMON, k, before[k], parent=self))
             else:
                 # Then there is changed values.
                 # Show which values have changed.
-                r = Diff(REMOVED, k, before[k], parent=self)
-                c = Diff(CHANGED, k, after[k], parent=self)
+                r = Change(REMOVED, k, before[k], parent=self)
+                c = Change(CHANGED, k, after[k], parent=self)
                 # Remember previous value
                 c.changedfrom = r
                 difs.append(c)
 
-        # Update difference attributes.
+        # Update Diff attributes.
         self.new_keys = [x.key for x in new]
         self.removed_keys = [x.key for x in removed]
         self.contents = sorted(difs, key=lambda x: x.key)
@@ -194,17 +181,12 @@ class Difference(DiffBase):
         return self.contents
 
     # VISUAL
-    def to_dict(self):
-        """Return dict representation of this object.
-
-        Returns: Object's __dict__
-        """
+    def to_dict(self) -> dict:
+        """Return dict representation of this object."""
         res = dict(self.__dict__)
-
         # Link to parent object leads to loop while serializing.
         if self.parent:
             res['parent'] = self.parent.key
-
         return res
 
     def _render_contents(self, difs):

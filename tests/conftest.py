@@ -1,7 +1,7 @@
 import pytest
 
-from gendiff.diff import Difference
-from gendiff.utils import safe_load, safe_read
+from gendiff.diff import Diff
+from gendiff.utils import load, safe_read
 
 
 # RESULTS
@@ -53,12 +53,12 @@ def nested_json_path():
 
 @pytest.fixture
 def simple_difference(changed_dicts_simple):
-    return Difference(*changed_dicts_simple)
+    return Diff(*changed_dicts_simple)
 
 
 @pytest.fixture
 def nested_difference(changed_dicts_nested):
-    return Difference(*changed_dicts_nested)
+    return Diff(*changed_dicts_nested)
 #
 
 
@@ -66,25 +66,25 @@ def nested_difference(changed_dicts_nested):
 @pytest.fixture
 def changed_dicts_simple(simple_json_path):
     """ `before.json` and `afer.json` deserialized contents."""
-    file1 = safe_load(simple_json_path[0])
-    file2 = safe_load(simple_json_path[1])
+    file1 = load(simple_json_path[0])
+    file2 = load(simple_json_path[1])
     return file1, file2
 
 
 @pytest.fixture
 def changed_dicts_nested(nested_json_path):
     """ `before.json` and `afer.json` deserialized contents."""
-    file1 = safe_load(nested_json_path[0])
-    file2 = safe_load(nested_json_path[1])
+    file1 = load(nested_json_path[0])
+    file2 = load(nested_json_path[1])
     return file1, file2
 
 
 @pytest.fixture
 def simple_json_view_dict():
-    return safe_load('./tests/fixtures/simple/json_view_res.json')
+    return load('./tests/fixtures/simple/json_view_res.json')
 
 
 @pytest.fixture
 def nested_json_view_dict():
-    return safe_load('./tests/fixtures/nested/json_view_res.json')
+    return load('./tests/fixtures/nested/json_view_res.json')
 #

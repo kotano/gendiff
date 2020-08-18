@@ -1,16 +1,12 @@
 """Json-view module consists of methods allowing you to export
-Difference object contents to json file."""
+`Diff` object contents to json file."""
 
 import json
 
-from gendiff.diff import Difference
+from gendiff.diff import Diff
 
 
-def json_view(difference: Difference) -> str:
-    return get_json_string(difference)
-
-
-def get_json_string(difference: Difference, indent=4) -> str:
+def get_json_string(diff: Diff, indent=4) -> str:
     """Return json string from difference object."""
 
     def call_to_dict(obj):
@@ -19,10 +15,14 @@ def get_json_string(difference: Difference, indent=4) -> str:
         return obj.to_dict()
 
     json_string = json.dumps(
-        difference.__dict__,
+        diff.__dict__,
         indent=indent,
         default=call_to_dict,
         check_circular=True
     )
 
     return json_string
+
+
+def render(diff: Diff) -> str:
+    return get_json_string(diff)

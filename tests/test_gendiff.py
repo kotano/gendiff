@@ -1,15 +1,15 @@
 from gendiff.cli import get_arg_parser
 from gendiff.core import generate_diff
-from gendiff.utils import safe_load
+from gendiff.utils import load
 
 
 def test_safe_load():
     expected = {'host': 'hexlet.io', 'proxy': '123.234.53.22', 'timeout': 50}
 
-    got = safe_load('./tests/fixtures/simple/before.json')
+    got = load('./tests/fixtures/simple/before.json')
     assert got == expected
 
-    got = safe_load('./tests/fixtures/simple/before.yml')
+    got = load('./tests/fixtures/simple/before.yml')
     assert got == expected
 
 

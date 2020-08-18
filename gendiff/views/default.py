@@ -1,2 +1,2 @@
-def default_view(difference) -> str:
-    return str(difference)
+def render(diff) -> str:
+    return str(diff)
