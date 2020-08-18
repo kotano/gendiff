@@ -4,14 +4,11 @@ This module contains classes to work with differences.
 """
 
 # STATUSES
-COMMON, NEW, REMOVED, CHANGED = ' ', '+', '-', 'c'
+COMMON, NEW, REMOVED, MODIFIED = ' ', '+', '-', 'm'
 
 
 class Change:
-    """`Change` class provides info about changed attributes."""
-
-    changedfrom = None
-    """Link to previous state of diff."""
+    """`Change` class provides info about `Diff`'s changed attributes."""
 
     def __init__(self, status=COMMON, key='', value=None, *, parent=''):
         """Create `Change` class instance.
@@ -28,6 +25,9 @@ class Change:
         self.parent = parent
         self.level = parent.level + 1 if parent else 1
         self.value = self._normalize(value)
+
+        self.changedfrom = None
+        """Link to previous state of diff."""
 
     def _normalize(self, value):
         res = value
@@ -56,7 +56,11 @@ class Change:
         res = dict(self.__dict__)
         # Link to parent object leads to loop while serializing,
         # so it is better to simply leave parent's key in the list.
-        res['parent'] = [x.key for x in self.get_parents()]
+        parents = self.get_parents()
+        parent = parents[-1].key if parents else ''
+        # res['parent'] = [x.key for x in self.get_parents()]
+        # res['parent'] = self.get_parents()[-1].key
+        res['parent'] = parent
         return res
 
     # VISUAL
@@ -65,7 +69,7 @@ class Change:
         indent = self.level * 2 * ' '
         status = self.status
 
-        if self.status == CHANGED:
+        if self.status == MODIFIED:
             # Add previous diff on top of current
             template = '{}\n{}'.format(str(self.changedfrom), template)
             status = NEW
@@ -82,7 +86,7 @@ class Change:
 
 class Diff:
     """`Diff` class gathers information about differences
-    between two dictionaries and keeps this info as `Diffs` in `contents`.
+    between two dictionaries and keeps this info as `Changes` in `contents`.
 
     Attributes:
         contents (list): list with `Change` objects.
@@ -101,8 +105,6 @@ class Diff:
     brackets: str = '{}'
     """A pair of characters to use as trailing and closing parentheses
     for rendering."""
-    parent = ''
-    """Parent object. Usually leads to `Change` object or empty string."""
 
     def __init__(self, before={}, after={}, *, level=0):
         """Create an instance of `Diff` class.
@@ -127,6 +129,7 @@ class Diff:
         self.new_keys = []
         self.removed_keys = []
         self.contents = []
+        self.parent = ''
 
         self.find_difference(before, after)
 
@@ -149,7 +152,7 @@ class Diff:
         """
         difs = []
 
-        common = self.common_keys = list(before.keys() & after.keys())
+        common = self.common_keys = sorted(before.keys() & after.keys())
         new = self.get_diffs(NEW, after, before)
         removed = self.get_diffs(REMOVED, before, after)
 
@@ -168,14 +171,15 @@ class Diff:
                 # Then there is changed values.
                 # Show which values have changed.
                 r = Change(REMOVED, k, before[k], parent=self)
-                c = Change(CHANGED, k, after[k], parent=self)
+                c = Change(MODIFIED, k, after[k], parent=self)
                 # Remember previous value
                 c.changedfrom = r
                 difs.append(c)
 
         # Update Diff attributes.
-        self.new_keys = [x.key for x in new]
-        self.removed_keys = [x.key for x in removed]
+        # Sort everything to make tests pass.
+        self.new_keys = sorted([x.key for x in new])
+        self.removed_keys = sorted([x.key for x in removed])
         self.contents = sorted(difs, key=lambda x: x.key)
 
         return self.contents
@@ -198,10 +202,16 @@ class Diff:
 
     def __str__(self):
         # Indentation for closing bracket.
-        inc = self.level + 1 if self.parent else self.level
-        indent = inc * 2 * ' '
-        rep = f'''\
-{self.brackets[0]}
-{self._render_contents(self.contents)}
-{indent}{self.brackets[1]}'''
-        return rep
+        depth = self.level + 1 if self.parent else self.level
+        indent = depth * 2 * ' '
+        template = (
+            '{br1}\n'
+            '{contents}\n'
+            '{indent}''{br2}'
+        )
+        res = template.format(
+            br1=self.brackets[0],
+            contents=self._render_contents(self.contents),
+            indent=indent, br2=self.brackets[1]
+        )
+        return res

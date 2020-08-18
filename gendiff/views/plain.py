@@ -17,7 +17,7 @@ Example:
 
 
 from gendiff.diff import Diff
-from gendiff.diff import COMMON, NEW, REMOVED, CHANGED
+from gendiff.diff import COMMON, NEW, REMOVED, MODIFIED
 
 
 def to_plain(change) -> str:
@@ -36,7 +36,7 @@ def to_plain(change) -> str:
     elif change.status == REMOVED:
         return template.format('removed')
 
-    elif change.status == CHANGED:
+    elif change.status == MODIFIED:
         value = "changed. From '{}' to '{}'".format(
             change.changedfrom.value, change.value)
         return template.format(value)

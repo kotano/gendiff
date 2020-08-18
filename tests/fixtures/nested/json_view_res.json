@@ -34,7 +34,6 @@
         }
     },
     "level": 0,
-    "parent": "",
     "common_keys": [
         "common",
         "group1"
@@ -49,7 +48,7 @@
         {
             "status": " ",
             "key": "common",
-            "parent": [],
+            "parent": "",
             "level": 1,
             "value": {
                 "before": {
@@ -69,62 +68,55 @@
                     }
                 },
                 "level": 1,
-                "parent": "common",
                 "common_keys": [
                     "setting1",
                     "setting3"
                 ],
                 "new_keys": [
-                    "setting5",
-                    "setting4"
+                    "setting4",
+                    "setting5"
                 ],
                 "removed_keys": [
-                    "setting6",
-                    "setting2"
+                    "setting2",
+                    "setting6"
                 ],
                 "contents": [
                     {
                         "status": " ",
                         "key": "setting1",
-                        "parent": [
-                            "common"
-                        ],
+                        "parent": "common",
                         "level": 2,
-                        "value": "Value 1"
+                        "value": "Value 1",
+                        "changedfrom": null
                     },
                     {
                         "status": "-",
                         "key": "setting2",
-                        "parent": [
-                            "common"
-                        ],
+                        "parent": "common",
                         "level": 2,
-                        "value": "200"
+                        "value": "200",
+                        "changedfrom": null
                     },
                     {
                         "status": " ",
                         "key": "setting3",
-                        "parent": [
-                            "common"
-                        ],
+                        "parent": "common",
                         "level": 2,
-                        "value": true
+                        "value": true,
+                        "changedfrom": null
                     },
                     {
                         "status": "+",
                         "key": "setting4",
-                        "parent": [
-                            "common"
-                        ],
+                        "parent": "common",
                         "level": 2,
-                        "value": "blah blah"
+                        "value": "blah blah",
+                        "changedfrom": null
                     },
                     {
                         "status": "+",
                         "key": "setting5",
-                        "parent": [
-                            "common"
-                        ],
+                        "parent": "common",
                         "level": 2,
                         "value": {
                             "before": {
@@ -134,7 +126,6 @@
                                 "key5": "value5"
                             },
                             "level": 2,
-                            "parent": "setting5",
                             "common_keys": [
                                 "key5"
                             ],
@@ -144,22 +135,20 @@
                                 {
                                     "status": " ",
                                     "key": "key5",
-                                    "parent": [
-                                        "common",
-                                        "setting5"
-                                    ],
+                                    "parent": "setting5",
                                     "level": 3,
-                                    "value": "value5"
+                                    "value": "value5",
+                                    "changedfrom": null
                                 }
-                            ]
-                        }
+                            ],
+                            "parent": "setting5"
+                        },
+                        "changedfrom": null
                     },
                     {
                         "status": "-",
                         "key": "setting6",
-                        "parent": [
-                            "common"
-                        ],
+                        "parent": "common",
                         "level": 2,
                         "value": {
                             "before": {
@@ -169,7 +158,6 @@
                                 "key": "value"
                             },
                             "level": 2,
-                            "parent": "setting6",
                             "common_keys": [
                                 "key"
                             ],
@@ -179,23 +167,25 @@
                                 {
                                     "status": " ",
                                     "key": "key",
-                                    "parent": [
-                                        "common",
-                                        "setting6"
-                                    ],
+                                    "parent": "setting6",
                                     "level": 3,
-                                    "value": "value"
+                                    "value": "value",
+                                    "changedfrom": null
                                 }
-                            ]
-                        }
+                            ],
+                            "parent": "setting6"
+                        },
+                        "changedfrom": null
                     }
-                ]
-            }
+                ],
+                "parent": "common"
+            },
+            "changedfrom": null
         },
         {
             "status": " ",
             "key": "group1",
-            "parent": [],
+            "parent": "",
             "level": 1,
             "value": {
                 "before": {
@@ -207,7 +197,6 @@
                     "baz": "bars"
                 },
                 "level": 1,
-                "parent": "group1",
                 "common_keys": [
                     "baz",
                     "foo"
@@ -216,39 +205,37 @@
                 "removed_keys": [],
                 "contents": [
                     {
-                        "status": "c",
+                        "status": "m",
                         "key": "baz",
-                        "parent": [
-                            "group1"
-                        ],
+                        "parent": "group1",
                         "level": 2,
                         "value": "bars",
                         "changedfrom": {
                             "status": "-",
                             "key": "baz",
-                            "parent": [
-                                "group1"
-                            ],
+                            "parent": "group1",
                             "level": 2,
-                            "value": "bas"
+                            "value": "bas",
+                            "changedfrom": null
                         }
                     },
                     {
                         "status": " ",
                         "key": "foo",
-                        "parent": [
-                            "group1"
-                        ],
+                        "parent": "group1",
                         "level": 2,
-                        "value": "bar"
+                        "value": "bar",
+                        "changedfrom": null
                     }
-                ]
-            }
+                ],
+                "parent": "group1"
+            },
+            "changedfrom": null
         },
         {
             "status": "-",
             "key": "group2",
-            "parent": [],
+            "parent": "",
             "level": 1,
             "value": {
                 "before": {
@@ -258,7 +245,6 @@
                     "abc": "12345"
                 },
                 "level": 1,
-                "parent": "group2",
                 "common_keys": [
                     "abc"
                 ],
@@ -268,19 +254,20 @@
                     {
                         "status": " ",
                         "key": "abc",
-                        "parent": [
-                            "group2"
-                        ],
+                        "parent": "group2",
                         "level": 2,
-                        "value": "12345"
+                        "value": "12345",
+                        "changedfrom": null
                     }
-                ]
-            }
+                ],
+                "parent": "group2"
+            },
+            "changedfrom": null
         },
         {
             "status": "+",
             "key": "group3",
-            "parent": [],
+            "parent": "",
             "level": 1,
             "value": {
                 "before": {
@@ -290,7 +277,6 @@
                     "fee": "100500"
                 },
                 "level": 1,
-                "parent": "group3",
                 "common_keys": [
                     "fee"
                 ],
@@ -300,14 +286,16 @@
                     {
                         "status": " ",
                         "key": "fee",
-                        "parent": [
-                            "group3"
-                        ],
+                        "parent": "group3",
                         "level": 2,
-                        "value": "100500"
+                        "value": "100500",
+                        "changedfrom": null
                     }
-                ]
-            }
+                ],
+                "parent": "group3"
+            },
+            "changedfrom": null
         }
-    ]
+    ],
+    "parent": ""
 }

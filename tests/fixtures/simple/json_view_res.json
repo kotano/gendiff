@@ -10,10 +10,9 @@
         "host": "hexlet.io"
     },
     "level": 0,
-    "parent": "",
     "common_keys": [
-        "timeout",
-        "host"
+        "host",
+        "timeout"
     ],
     "new_keys": [
         "verbose"
@@ -25,37 +24,42 @@
         {
             "status": " ",
             "key": "host",
-            "parent": [],
+            "parent": "",
             "level": 1,
-            "value": "hexlet.io"
+            "value": "hexlet.io",
+            "changedfrom": null
         },
         {
             "status": "-",
             "key": "proxy",
-            "parent": [],
+            "parent": "",
             "level": 1,
-            "value": "123.234.53.22"
+            "value": "123.234.53.22",
+            "changedfrom": null
         },
         {
-            "status": "c",
+            "status": "m",
             "key": "timeout",
-            "parent": [],
+            "parent": "",
             "level": 1,
             "value": 20,
             "changedfrom": {
                 "status": "-",
                 "key": "timeout",
-                "parent": [],
+                "parent": "",
                 "level": 1,
-                "value": 50
+                "value": 50,
+                "changedfrom": null
             }
         },
         {
             "status": "+",
             "key": "verbose",
-            "parent": [],
+            "parent": "",
             "level": 1,
-            "value": true
+            "value": true,
+            "changedfrom": null
         }
-    ]
+    ],
+    "parent": ""
 }

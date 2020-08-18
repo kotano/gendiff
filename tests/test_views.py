@@ -1,8 +1,6 @@
 from gendiff.views import plain, json as jason, default
 import json
 
-import pytest
-
 
 def test_default_view(
         simple_difference, simple_res,
@@ -30,7 +28,6 @@ def test_plain_view(
     pass
 
 
-@pytest.mark.xfail
 def test_json_view(
         simple_difference, nested_difference,
         simple_json_view_dict, nested_json_view_dict):
@@ -39,6 +36,6 @@ def test_json_view(
     expected = simple_json_view_dict
     assert got == expected, 'simple failed'
 
-    got = json.loads(jason(nested_difference))
+    got = json.loads(jason.render(nested_difference))
     expected = nested_json_view_dict
     assert got == expected, 'nested failed'
