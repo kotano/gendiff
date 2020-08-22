@@ -7,6 +7,6 @@ Views folder is made to add new views to Gendiff.
 To add new view you should create new module in views folder.
 It's name will be collected by `cli` automatically.
 
-Inside that module you have to add function called 'modulename + _view', i.e. `plain_view` for plain module.
+Inside that module you have to add function called 'render', which will be used by renderer.
 
-After you finished creating your view, add corresponding code to views.\_\_init__.render function.
+After you finished creating your view, add new view to VIEWS dictionary inside `views.__init__`.
