@@ -1,41 +1,33 @@
-from gendiff.views import plain, json as jason, default
 import json
 
+from gendiff.views import plain, json as jason, default
 
-def test_default_view(
-        simple_difference, simple_res,
-        nested_difference, nested_res):
-    expected = simple_res
-    got = default.render(simple_difference)
+
+def test_default_view(simple, nested):
+    expected = simple.res_default
+    got = default.render(simple.diff)
     assert got == expected, 'simple failed'
 
-    expected = nested_res
-    got = default.render(nested_difference)
+    expected = nested.res_default
+    got = default.render(nested.diff)
     assert got == expected, 'nested failed'
 
 
-def test_plain_view(
-        nested_plain_view_res, simple_plain_view_res,
-        simple_difference, nested_difference):
+def test_plain_view(simple, nested):
 
-    expected = simple_plain_view_res
-    got = plain.render(simple_difference)
+    expected = simple.res_plain
+    got = plain.render(simple.diff)
     assert got == expected
 
-    expected = nested_plain_view_res
-    got = plain.render(nested_difference)
+    expected = nested.res_plain
+    got = plain.render(nested.diff)
     assert got == expected
-    pass
 
 
-def test_json_view(
-        simple_difference, nested_difference,
-        simple_json_view_dict, nested_json_view_dict):
+def test_json_view(simple, nested):
+    got = json.loads(jason.render(simple.diff))
+    expected = simple.res_json
 
-    got = json.loads(jason.render(simple_difference))
-    expected = simple_json_view_dict
-    assert got == expected, 'simple failed'
-
-    got = json.loads(jason.render(nested_difference))
-    expected = nested_json_view_dict
+    got = json.loads(jason.render(nested.diff))
+    expected = nested.res_json
     assert got == expected, 'nested failed'

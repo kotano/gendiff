@@ -22,7 +22,5 @@ def render_view(diff: Diff, format_):
 
     Returns: str
     """
-    if format_ not in VIEWS:
-        return 'Unsupported format.'
     view = VIEWS.get(format_)
     return view.render(diff)

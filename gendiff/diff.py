@@ -2,15 +2,16 @@
 
 This module contains classes to work with differences.
 """
+from copy import deepcopy
 
 # STATUSES
-COMMON, NEW, REMOVED, MODIFIED = ' ', '+', '-', 'm'
+COMMON, NEW, REMOVED, MODIFIED = 'C', 'N', 'R', 'M'
 
 
 class Change:
     """`Change` class provides info about `Diff`'s changed attributes."""
 
-    def __init__(self, status=COMMON, key='', value=None, *, parent=''):
+    def __init__(self, status, key='', value=None, *, parent=''):
         """Create `Change` class instance.
 
         Args:
@@ -52,36 +53,8 @@ class Change:
                 res.append(previous_diff)
         return res
 
-    def to_dict(self):
-        res = dict(self.__dict__)
-        # Link to parent object leads to loop while serializing,
-        # so it is better to simply leave parent's key in the list.
-        parents = self.get_parents()
-        parent = parents[-1].key if parents else ''
-        # res['parent'] = [x.key for x in self.get_parents()]
-        # res['parent'] = self.get_parents()[-1].key
-        res['parent'] = parent
-        return res
-
-    # VISUAL
-    def __str__(self):
-        template = '{}{} {}: {}'
-        indent = self.level * 2 * ' '
-        status = self.status
-
-        if self.status == MODIFIED:
-            # Add previous diff on top of current
-            template = '{}\n{}'.format(str(self.changedfrom), template)
-            status = NEW
-
-        res = template.format(
-            indent,
-            status,
-            self.key,
-            self.value
-        )
-
-        return res
+    def serialize(self):
+        return {'status': self.status, 'value': self.value}
 
 
 class Diff:
@@ -90,44 +63,30 @@ class Diff:
 
     Attributes:
         contents (list): list with `Change` objects.
-        new_keys (list): list of new keys.
-        common_keys (list): list of common keys.
-        removed_keys (list): list of removed keys.
     """
 
-    new_keys: list
-    removed_keys: list
-    common_keys: list
     contents: list
-
     level: int
     """Nesting level."""
-    brackets: str = '{}'
-    """A pair of characters to use as trailing and closing parentheses
-    for rendering."""
 
-    def __init__(self, before={}, after={}, *, level=0):
+    def __init__(self, before: dict, after: dict, *, level=0):
         """Create an instance of `Diff` class.
 
         NOTE: Executes `self.find_difference(before, after)` at the end.
 
         Args:
 
-            before (dict, optional): Older dict to compare with. Defaults to {}.
-            after (dict, optional): New dict. Defaults to {}.
+            before (dict): Older dict to compare with. Defaults to {}.
+            after (dict): New dict. Defaults to {}.
 
             NOTE: For inner use.
             level (int, optional): Nesting level. Defaults to 0.
 
         """
 
-        self.before = before
-        self.after = after
+        self.before = deepcopy(before)
+        self.after = deepcopy(after)
         self.level = level
-
-        self.common_keys = []
-        self.new_keys = []
-        self.removed_keys = []
         self.contents = []
         self.parent = ''
 
@@ -152,7 +111,7 @@ class Diff:
         """
         difs = []
 
-        common = self.common_keys = sorted(before.keys() & after.keys())
+        common = sorted(before.keys() & after.keys())
         new = self.get_diffs(NEW, after, before)
         removed = self.get_diffs(REMOVED, before, after)
 
@@ -172,46 +131,18 @@ class Diff:
                 # Show which values have changed.
                 r = Change(REMOVED, k, before[k], parent=self)
                 c = Change(MODIFIED, k, after[k], parent=self)
-                # Remember previous value
+                # Remember previous value.
                 c.changedfrom = r
                 difs.append(c)
 
         # Update Diff attributes.
-        # Sort everything to make tests pass.
-        self.new_keys = sorted([x.key for x in new])
-        self.removed_keys = sorted([x.key for x in removed])
         self.contents = sorted(difs, key=lambda x: x.key)
-
         return self.contents
 
     # VISUAL
-    def to_dict(self) -> dict:
-        """Return dict representation of this object."""
-        res = dict(self.__dict__)
-        # Link to parent object leads to loop while serializing.
-        if self.parent:
-            res['parent'] = self.parent.key
-        return res
-
-    def _render_contents(self, difs):
-        res = []
-        for x in difs:
-            res.append(str(x))
-        res = '\n'.join(res)
-        return res
-
-    def __str__(self):
-        # Indentation for closing bracket.
-        depth = self.level + 1 if self.parent else self.level
-        indent = depth * 2 * ' '
-        template = (
-            '{br1}\n'
-            '{contents}\n'
-            '{indent}''{br2}'
-        )
-        res = template.format(
-            br1=self.brackets[0],
-            contents=self._render_contents(self.contents),
-            indent=indent, br2=self.brackets[1]
-        )
+    def serialize(self) -> dict:
+        """Return deserializable representation of this object."""
+        res = {}
+        for c in self.contents:
+            res[c.key] = c
         return res

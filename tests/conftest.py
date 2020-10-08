@@ -1,90 +1,47 @@
+import pathlib
+
 import pytest
 
 from gendiff.diff import Diff
-from gendiff.utils import load, safe_read
+from gendiff.core import load
+
+FIXTURES = pathlib.Path(__file__).parent / 'fixtures'
+SIMPLE = FIXTURES / 'simple'
+NESTED = FIXTURES / 'nested'
 
 
-# RESULTS
-@pytest.fixture
-def simple_res():
-    return safe_read('./tests/fixtures/simple/gendiff_res.txt')
+class Simple:
+    path_json = list(map(str, [SIMPLE / 'before.json', SIMPLE / 'after.json']))
+    path_yml = list(map(str, [SIMPLE / 'before.yml', SIMPLE / 'after.yml']))
+
+    res_default = (SIMPLE / 'res_default.txt').read_text()
+    res_plain = (SIMPLE / 'res_plain.txt').read_text()
+    res_json = load(SIMPLE / 'res_json.json')
+
+    before = load(SIMPLE / 'before.json')
+    after = load(SIMPLE / 'after.json')
+
+    diff = Diff(before, after)
 
 
-@pytest.fixture
-def nested_res():
-    return safe_read('./tests/fixtures/nested/gendiff_nested_res.txt')
+class Nested:
+    path_json = list(map(str, [NESTED / 'before.json', NESTED / 'after.json']))
+
+    res_default = (NESTED / 'res_default.txt').read_text()
+    res_plain = (NESTED / 'res_plain.txt').read_text()
+    res_json = load(NESTED / 'res_json.json')
+
+    before = load(NESTED / 'before.json')
+    after = load(NESTED / 'after.json')
+
+    diff = Diff(before, after)
 
 
-@pytest.fixture
-def simple_plain_view_res():
-    return safe_read('./tests/fixtures/simple/plain_res.txt')
+@pytest.fixture(scope='module')
+def simple():
+    return Simple()
 
 
-@pytest.fixture
-def nested_plain_view_res():
-    return safe_read('./tests/fixtures/nested/plain_res.txt')
-#
-
-
-# PATHS
-@pytest.fixture
-def simple_json_path():
-    return ('./tests/fixtures/simple/before.json',
-            './tests/fixtures/simple/after.json')
-
-
-@pytest.fixture
-def simple_yml_path():
-    return ('./tests/fixtures/simple/before.yml',
-            './tests/fixtures/simple/after.yml')
-
-
-@pytest.fixture
-def simple_mix_path():
-    return ('./tests/fixtures/simple/before.yml',
-            './tests/fixtures/simple/after.json')
-
-
-@pytest.fixture
-def nested_json_path():
-    return ('./tests/fixtures/nested/before.json',
-            './tests/fixtures/nested/after.json')
-
-
-@pytest.fixture
-def simple_difference(changed_dicts_simple):
-    return Diff(*changed_dicts_simple)
-
-
-@pytest.fixture
-def nested_difference(changed_dicts_nested):
-    return Diff(*changed_dicts_nested)
-#
-
-
-# DICTIONARIES
-@pytest.fixture
-def changed_dicts_simple(simple_json_path):
-    """ `before.json` and `afer.json` deserialized contents."""
-    file1 = load(simple_json_path[0])
-    file2 = load(simple_json_path[1])
-    return file1, file2
-
-
-@pytest.fixture
-def changed_dicts_nested(nested_json_path):
-    """ `before.json` and `afer.json` deserialized contents."""
-    file1 = load(nested_json_path[0])
-    file2 = load(nested_json_path[1])
-    return file1, file2
-
-
-@pytest.fixture
-def simple_json_view_dict():
-    return load('./tests/fixtures/simple/json_view_res.json')
-
-
-@pytest.fixture
-def nested_json_view_dict():
-    return load('./tests/fixtures/nested/json_view_res.json')
-#
+@pytest.fixture(scope='module')
+def nested():
+    return Nested()

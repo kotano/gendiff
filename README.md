@@ -36,3 +36,16 @@ gendiff path/to/file1  path/to/file2
 ### Json format
 
 [![asciicast](https://asciinema.org/a/y2bGBKVY9VbewMB40556Nub0D.svg)](https://asciinema.org/a/y2bGBKVY9VbewMB40556Nub0D)
+
+## Contributing
+
+### Adding new view
+
+Views folder is made to add new views to Gendiff.
+
+To add new view you should create new module in views folder.
+It's name will be collected by `cli` automatically.
+
+Inside that module you have to add function called 'modulename + _view', i.e. `plain_view` for plain module.
+
+After you finished creating your view, add corresponding code to views.\_\_init__.render function.

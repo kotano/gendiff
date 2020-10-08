@@ -9,16 +9,13 @@ from gendiff.diff import Diff
 def get_json_string(diff: Diff, indent=4) -> str:
     """Return json string from difference object."""
 
-    def call_to_dict(obj):
-        """Call object's to_dict() function to get dictionary in case
-        'json.dumps' can not serialize object's contents."""
-        return obj.to_dict()
+    def call_serialize(obj):
+        return obj.serialize()
 
     json_string = json.dumps(
-        diff.__dict__,
+        diff.serialize(),
         indent=indent,
-        default=call_to_dict,
-        check_circular=True
+        default=call_serialize,
     )
 
     return json_string

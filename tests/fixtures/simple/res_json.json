@@ -1,0 +1,18 @@
+{
+    "host": {
+        "status": "C",
+        "value": "hexlet.io"
+    },
+    "proxy": {
+        "status": "R",
+        "value": "123.234.53.22"
+    },
+    "timeout": {
+        "status": "M",
+        "value": 20
+    },
+    "verbose": {
+        "status": "N",
+        "value": true
+    }
+}
