@@ -3,11 +3,13 @@ import json
 from gendiff.views import plain, json as jason, default
 
 
-def test_default_view(simple, nested):
+def test_default_view_simple(simple):
     expected = simple.res_default
     got = default.render(simple.diff)
     assert got == expected, 'simple failed'
 
+
+def test_default_view_nested(nested):
     expected = nested.res_default
     got = default.render(nested.diff)
     assert got == expected, 'nested failed'
