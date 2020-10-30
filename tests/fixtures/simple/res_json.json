@@ -1,18 +1,19 @@
 {
-    "host": {
-        "status": "C",
-        "value": "hexlet.io"
-    },
-    "proxy": {
-        "status": "R",
-        "value": "123.234.53.22"
-    },
-    "timeout": {
-        "status": "M",
-        "value": 20
-    },
-    "verbose": {
-        "status": "N",
-        "value": true
-    }
+    "host": [
+        "U",
+        "hexlet.io"
+    ],
+    "proxy": [
+        "D",
+        "123.234.53.22"
+    ],
+    "timeout": [
+        "C",
+        50,
+        20
+    ],
+    "verbose": [
+        "A",
+        true
+    ]
 }

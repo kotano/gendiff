@@ -2,7 +2,6 @@
 
 Use this module to add new views into the program.
 """
-from gendiff.diff import Diff
 from gendiff.views import plain, json as jason, default
 
 
@@ -13,7 +12,7 @@ VIEWS = {
 }
 
 
-def render_view(diff: Diff, format_):
+def render_view(diff, format_):
     """Render `Diff` object.
 
     Args:

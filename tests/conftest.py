@@ -2,7 +2,7 @@ import pathlib
 
 import pytest
 
-from gendiff.diff import Diff
+from gendiff.diff import find_difference
 from gendiff.core import load
 
 FIXTURES = pathlib.Path(__file__).parent / 'fixtures'
@@ -21,7 +21,7 @@ class Simple:
     before = load(SIMPLE / 'before.json')
     after = load(SIMPLE / 'after.json')
 
-    diff = Diff(before, after)
+    diff = find_difference(before, after)
 
 
 class Nested:
@@ -34,7 +34,7 @@ class Nested:
     before = load(NESTED / 'before.json')
     after = load(NESTED / 'after.json')
 
-    diff = Diff(before, after)
+    diff = find_difference(before, after)
 
 
 @pytest.fixture(scope='module')

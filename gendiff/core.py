@@ -7,7 +7,7 @@ from pathlib import Path
 
 import yaml
 
-from gendiff.diff import Diff
+from gendiff.diff import find_difference
 from gendiff.views import render_view
 
 
@@ -47,6 +47,5 @@ def generate_diff(file1, file2, format_='default'):
 
     data1 = load(file1)
     data2 = load(file2)
-    diff = Diff(data1, data2)
-
+    diff = find_difference(data1, data2)
     return render_view(diff, format_)

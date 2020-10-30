@@ -1,72 +1,61 @@
 {
-    "common": {
-        "status": "C",
-        "value": {
-            "setting1": {
-                "status": "C",
-                "value": "Value 1"
-            },
-            "setting2": {
-                "status": "R",
-                "value": "200"
-            },
-            "setting3": {
-                "status": "C",
-                "value": true
-            },
-            "setting4": {
-                "status": "N",
-                "value": "blah blah"
-            },
-            "setting5": {
-                "status": "N",
-                "value": {
-                    "key5": {
-                        "status": "C",
-                        "value": "value5"
-                    }
+    "common": [
+        "N",
+        {
+            "setting1": [
+                "U",
+                "Value 1"
+            ],
+            "setting2": [
+                "D",
+                "200"
+            ],
+            "setting3": [
+                "U",
+                true
+            ],
+            "setting4": [
+                "A",
+                "blah blah"
+            ],
+            "setting5": [
+                "A",
+                {
+                    "key5": "value5"
                 }
-            },
-            "setting6": {
-                "status": "R",
-                "value": {
-                    "key": {
-                        "status": "C",
-                        "value": "value"
-                    }
+            ],
+            "setting6": [
+                "D",
+                {
+                    "key": "value"
                 }
-            }
+            ]
         }
-    },
-    "group1": {
-        "status": "C",
-        "value": {
-            "baz": {
-                "status": "M",
-                "value": "bars"
-            },
-            "foo": {
-                "status": "C",
-                "value": "bar"
-            }
+    ],
+    "group1": [
+        "N",
+        {
+            "baz": [
+                "C",
+                "bas",
+                "bars"
+            ],
+            "foo": [
+                "U",
+                "bar"
+            ]
         }
-    },
-    "group2": {
-        "status": "R",
-        "value": {
-            "abc": {
-                "status": "C",
-                "value": "12345"
-            }
+    ],
+    "group2": [
+        "D",
+        {
+            "abc": "12345"
         }
-    },
-    "group3": {
-        "status": "N",
-        "value": {
-            "fee": {
-                "status": "C",
-                "value": "100500"
-            }
+    ],
+    "group3": [
+        "A",
+        {
+            "fee": "100500"
         }
-    }
+    ]
 }
