@@ -23,16 +23,12 @@ def get_diff(before: dict, after: dict) -> dict:
         dict: Dictionary in `key: [status, value, *new_value]` format.
     """
     diff = {}
-    before_keys = before.keys()
-    after_keys = after.keys()
-
     # Add new keys
     diff.update(find_difference(ADDED, after, before))
     # Add removed keys
     diff.update(find_difference(DELETED, before, after))
-
     # Handle common keys
-    for key in before_keys & after_keys:
+    for key in before.keys() & after.keys():
         before_val = before[key]
         after_val = after[key]
         if isinstance(before[key], dict) and isinstance(after[key], dict):
