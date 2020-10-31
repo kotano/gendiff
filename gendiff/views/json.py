@@ -4,23 +4,5 @@
 import json
 
 
-def render(diff):
+def render(diff) -> str:
     return json.dumps(diff, indent=4)
-
-# def get_json_string(diff: Diff, indent=4) -> str:
-#     """Return json string from difference object."""
-
-#     def call_serialize(obj):
-#         return obj.serialize()
-
-#     json_string = json.dumps(
-#         diff.serialize(),
-#         indent=indent,
-#         default=call_serialize,
-#     )
-
-#     return json_string
-
-
-# def render(diff: Diff) -> str:
-#     return get_json_string(diff)

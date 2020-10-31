@@ -42,7 +42,7 @@ status_maps = {
 first_line = "{ind}{sign} {key}: {{\n"
 
 
-def render_value(val, indent):
+def render_value(val, indent) -> str:
     if isinstance(val, dict):
         ind = '  ' * indent
         closing_bracket = '  ' * (indent - 1)
@@ -53,11 +53,10 @@ def render_value(val, indent):
         conts = ''.join(temp)
         res = "{{\n{conts}{ind}}}".format(conts=conts, ind=closing_bracket)
         return res
-    else:
-        return val
+    return val
 
 
-def default_view(dif, depth=1):
+def default_view(dif, depth=1) -> list:
     res = []
     ind = '  ' * depth
     for k, v in dif.items():
@@ -77,7 +76,7 @@ def default_view(dif, depth=1):
     return res
 
 
-def render(diff):
+def render(diff) -> str:
     contents = ''.join(default_view(diff))
     string = "{{\n{contents}}}".format(contents=contents)
     return string

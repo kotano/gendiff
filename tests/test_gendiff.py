@@ -1,5 +1,5 @@
 from gendiff.cli import get_arg_parser
-from gendiff.core import generate_diff, load
+from gendiff.main import generate_diff, load
 
 
 def test_safe_load():

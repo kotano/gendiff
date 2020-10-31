@@ -1,18 +1,18 @@
-# """Plain-view module determines new way of rendering `Diff` object.
-# `plain view` consists of strings each describing changes made in new version
-# of file.
+"""Plain-view module determines new way of rendering `Diff` object.
+`plain view` consists of strings each describing changes made in new version
+of file.
 
-# Example:
-#     >>> generate_diff(before, after, 'plain')
-#     Property 'common.setting2' was removed
-#     Property 'common.setting6' was removed
-#     Property 'common.setting4' was added with value: 'blah blah'
-#     Property 'common.setting5' was added with value: 'complex value'
-#     Property 'common.site.base' was removed
-#     Property 'group1.baz' was changed. From 'bas' to 'bars'
-#     Property 'group2' was removed
-#     Property 'group3' was added with value: 'complex value'
-# """
+Example:
+    >>> generate_diff(before, after, 'plain')
+    Property 'common.setting2' was removed
+    Property 'common.setting6' was removed
+    Property 'common.setting4' was added with value: 'blah blah'
+    Property 'common.setting5' was added with value: 'complex value'
+    Property 'common.site.base' was removed
+    Property 'group1.baz' was changed. From 'bas' to 'bars'
+    Property 'group2' was removed
+    Property 'group3' was added with value: 'complex value'
+"""
 
 
 from gendiff import diff
@@ -27,7 +27,7 @@ status_maps = {
 }
 
 
-def collect_plain(dif, path=''):
+def collect_plain(dif, path='') -> list:
     res = []
     for k, v in dif.items():
         status, *values = v
@@ -44,5 +44,5 @@ def collect_plain(dif, path=''):
     return res
 
 
-def render(diff):
+def render(diff) -> str:
     return '\n'.join(collect_plain(diff))

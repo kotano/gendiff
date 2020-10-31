@@ -4,7 +4,14 @@ from collections import OrderedDict
 CHANGED, UNCHANGED, ADDED, DELETED, NESTED = 'C', 'U', 'A', 'D', 'N'
 
 
-def find_difference(before: dict, after: dict):
+def find_difference(status, d1, d2) -> dict:
+    res = {}
+    for key in d1.keys() - d2.keys():
+        res[key] = (status, d1[key])
+    return res
+
+
+def get_diff(before: dict, after: dict) -> dict:
     """Find difference between two dictionaries.
 
     Args:
@@ -13,19 +20,16 @@ def find_difference(before: dict, after: dict):
         after (dict): Current dictionary.
 
     Returns:
-        list: `Diff` object's `self.contents` attribute.
+        dict: Dictionary in `key: [status, value, *new_value]` format.
     """
-    # STRUCTURE: `key: (status, value)`
     diff = {}
     before_keys = before.keys()
     after_keys = after.keys()
 
     # Add new keys
-    for key in after_keys - before_keys:
-        diff[key] = (ADDED, after[key])
+    diff.update(find_difference(ADDED, after, before))
     # Add removed keys
-    for key in before_keys - after_keys:
-        diff[key] = (DELETED, before[key])
+    diff.update(find_difference(DELETED, before, after))
 
     # Handle common keys
     for key in before_keys & after_keys:
@@ -33,7 +37,7 @@ def find_difference(before: dict, after: dict):
         after_val = after[key]
         if isinstance(before[key], dict) and isinstance(after[key], dict):
             # If both values are dictionaries, then find their differences.
-            diff[key] = (NESTED, find_difference(before_val, after_val))
+            diff[key] = (NESTED, get_diff(before_val, after_val))
         elif before[key] == after[key]:
             # If values are same
             diff[key] = (UNCHANGED, before_val)
