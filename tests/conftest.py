@@ -14,7 +14,7 @@ class Simple:
     path_json = list(map(str, [SIMPLE / 'before.json', SIMPLE / 'after.json']))
     path_yml = list(map(str, [SIMPLE / 'before.yml', SIMPLE / 'after.yml']))
 
-    res_default = (SIMPLE / 'res_default.txt').read_text()
+    res_stylish = (SIMPLE / 'res_stylish.txt').read_text()
     res_plain = (SIMPLE / 'res_plain.txt').read_text()
     res_json = load(SIMPLE / 'res_json.json')
 
@@ -27,7 +27,7 @@ class Simple:
 class Nested:
     path_json = list(map(str, [NESTED / 'before.json', NESTED / 'after.json']))
 
-    res_default = (NESTED / 'res_default.txt').read_text()
+    res_stylish = (NESTED / 'res_stylish.txt').read_text()
     res_plain = (NESTED / 'res_plain.txt').read_text()
     res_json = load(NESTED / 'res_json.json')
 

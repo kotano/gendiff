@@ -2,11 +2,11 @@
 
 Use this module to add new views into the program.
 """
-from gendiff.views import plain, json as jason, default
+from gendiff.views import plain, json as jason, stylish
 
 
 VIEWS = {
-    'default': default,
+    'stylish': stylish,
     'plain': plain,
     'json': jason,
 }

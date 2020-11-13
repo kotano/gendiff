@@ -15,13 +15,13 @@ def test_safe_load():
 def test_cli_get_argparser(simple):
     args = get_arg_parser().parse_args([*simple.path_json])
 
-    expected = simple.res_default
+    expected = simple.res_stylish
     got = generate_diff(args.first_file, args.second_file)
     assert got == expected
 
 
 def test_gendiff(simple):
-    expected = simple.res_default
+    expected = simple.res_stylish
     got = generate_diff(*simple.path_json)
     assert got == expected
 
@@ -30,7 +30,7 @@ def test_gendiff(simple):
 
 
 def test_gendiff_nested(nested):
-    expected = nested.res_default
+    expected = nested.res_stylish
     got = generate_diff(*nested.path_json)
     assert got == expected
 

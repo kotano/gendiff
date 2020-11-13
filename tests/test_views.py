@@ -1,17 +1,17 @@
 import json
 
-from gendiff.views import plain, json as jason, default
+from gendiff.views import plain, json as jason, stylish
 
 
-def test_default_view_simple(simple):
-    expected = simple.res_default
-    got = default.render(simple.diff)
+def test_stylish_view_simple(simple):
+    expected = simple.res_stylish
+    got = stylish.render(simple.diff)
     assert got == expected, 'simple failed'
 
 
-def test_default_view_nested(nested):
-    expected = nested.res_default
-    got = default.render(nested.diff)
+def test_stylish_view_nested(nested):
+    expected = nested.res_stylish
+    got = stylish.render(nested.diff)
     assert got == expected, 'nested failed'
 
 

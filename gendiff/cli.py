@@ -17,7 +17,7 @@ def get_arg_parser() -> object:
     parser.add_argument(
         '-f', '--format',
         help='set format of output ' + repr(available_views),
-        default='default', type=str
+        default='stylish', type=str
     )
     return parser
 

@@ -1,7 +1,7 @@
-"""Default view returns json-like string of diff contents.
+"""Stylish view returns json-like string of diff contents.
 
 EXAMPLE
->>> generate_diff(before, after, 'default')
+>>> generate_diff(before, after, 'stylish')
 {
     common: {
         setting1: Value 1
@@ -35,7 +35,6 @@ status_maps = {
     diff.UNCHANGED: "{ind}  {key}: {val}\n",
     diff.ADDED: "{ind}+ {key}: {val}\n",
     diff.DELETED: "{ind}- {key}: {val}\n",
-    diff.NESTED: "{ind}  {key}: {{\n",
     diff.CHANGED: "{ind}- {key}: {before}\n{ind}+ {key}: {after}\n"
 }
 
@@ -56,14 +55,14 @@ def render_value(val, indent) -> str:
     return val
 
 
-def default_view(dif, depth=1) -> list:
+def stylish_view(dif, depth=1) -> list:
     res = []
     ind = '  ' * depth
     for k, v in dif.items():
         status, *values = v
         if status == diff.NESTED:
-            res.append(status_maps[status].format(ind=ind, key=k))
-            res += default_view(values[0], depth + 2)
+            res.append("{ind}  {key}: {{\n".format(ind=ind, key=k))
+            res += stylish_view(values[0], depth + 2)
             res.append(ind * 2 + "}\n")
         elif status == diff.CHANGED:
             res.append(status_maps[status].format(
@@ -77,6 +76,6 @@ def default_view(dif, depth=1) -> list:
 
 
 def render(diff) -> str:
-    contents = ''.join(default_view(diff))
+    contents = ''.join(stylish_view(diff))
     string = "{{\n{contents}}}".format(contents=contents)
     return string

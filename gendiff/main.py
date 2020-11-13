@@ -32,7 +32,7 @@ def load(path) -> dict:
     return data
 
 
-def generate_diff(file1, file2, format_='default'):
+def generate_diff(file1, file2, format_='stylish'):
     """Generate difference between two files.
 
     Args:
